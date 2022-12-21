@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCAT|readMe</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row start">
+            <h1>PCAT Çalışma Ortamını Hazırlamak</h1>
+
+            <h2>git ve github</h2>
+            <p>Bunları biliyoruz</p>
+
+            <h2>VSC içinde hazırlık</h2>
+            <p>
+                prettier - code formatter eklenti olarak indirilir.
+            </p>
+            <p>
+                ctrl + shift + p -> Prettier: Create Configuration File ile proje dosyasında .prettierrc dosyası oluşturulur.
+            </p>
+            <p>
+                prettier'in çalışması için gereken dosya npm ile kurulur. <br>
+                <code>
+                    npm init
+                </code> <br>
+                <code>
+                    npm install prettier -D --save-exact 
+                </code> --save-exact bizde yüklü olan prettier ile aynı versiyonu indirmeyi sağlar.
+            </p>
+
+            <h2>.prettierrc Ayarları</h2>
+            <p>
+                <code>"semi":true</code> her satırın sonuna noktalı virgül ekler. <br>
+                <code>"singleQuote": true</code> tek tırnak içine almak için. <br>
+                <code>"trailingComma": "es5"</code>
+            </p>
+            <p>
+                Bu kurulum kodu yazdıktan sonra tümünü seçip sağ tıklayıp "format document" yapınca kodun istediğimiz gibi görünmesini sağlar.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
