@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PCAT|readMe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+
 <body>
     <div class="container">
         <div class="row start">
@@ -15,32 +18,1024 @@
             <p>Bunları biliyoruz</p>
 
             <h2>VSC içinde hazırlık</h2>
+            <p>prettier - code formatter eklenti olarak indirilir.</p>
             <p>
-                prettier - code formatter eklenti olarak indirilir.
+                ctrl + shift + p -> Prettier: Create Configuration File ile proje
+                dosyasında .prettierrc dosyası oluşturulur.
             </p>
             <p>
-                ctrl + shift + p -> Prettier: Create Configuration File ile proje dosyasında .prettierrc dosyası oluşturulur.
-            </p>
-            <p>
-                prettier'in çalışması için gereken dosya npm ile kurulur. <br>
-                <code>
-                    npm init
-                </code> <br>
-                <code>
-                    npm install prettier -D --save-exact 
-                </code> --save-exact bizde yüklü olan prettier ile aynı versiyonu indirmeyi sağlar.
+                prettier'in çalışması için gereken dosya npm ile kurulur. <br />
+                <code> npm init </code> <br />
+                <code> npm install prettier -D --save-exact </code> --save-exact bizde
+                yüklü olan prettier ile aynı versiyonu indirmeyi sağlar.
             </p>
 
             <h2>.prettierrc Ayarları</h2>
             <p>
-                <code>"semi":true</code> her satırın sonuna noktalı virgül ekler. <br>
-                <code>"singleQuote": true</code> tek tırnak içine almak için. <br>
+                <code>"semi":true</code> her satırın sonuna noktalı virgül ekler.
+                <br />
+                <code>"singleQuote": true</code> tek tırnak içine almak için. <br />
                 <code>"trailingComma": "es5"</code>
             </p>
             <p>
-                Bu kurulum kodu yazdıktan sonra tümünü seçip sağ tıklayıp "format document" yapınca kodun istediğimiz gibi görünmesini sağlar.
+                Bu kurulum kodu yazdıktan sonra tümünü seçip sağ tıklayıp "format
+                document" yapınca kodun istediğimiz gibi görünmesini sağlar.
+            </p>
+
+            <h2>.gitignore</h2>
+            <p>
+                hazır .gitignore dosyası oluşturmak için:
+                <a href="https://www.toptal.com/developers/gitignore">toptal.com/developers/gitignore</a>
+            </p>
+
+            <h2>Template Dosyası İndirmek</h2>
+            <p>
+                Orjinali için:
+                <a href="https://templatemo.com/tm-552-video-catalog">https://templatemo.com/tm-552-video-catalog</a>
+                <br />
+                Biz hocanın düzenlediği versiyon ile çalışacağız.
+            </p>
+
+            <h2>Express Modülü</h2>
+            <p>
+                <code> npm i express --save </code>
+            </p>
+            <p>
+                express <strong>dependencies</strong>. yani bu kodun çalışması için
+                elzem. <br />
+                prettier sie <strong>devDependencies</strong>. yani kodun çalışması
+                için gerekli değil. Kodu yazarken bize yardımcı.
+            </p>
+            <p>
+                <code>
+                    const express = require('express'); <br />
+                    const app = express();
+                </code>
+                ile express import edildi.
+            </p>
+            <p>
+                <code>
+                    const port = 3000 <br />
+                    app.listen(port, ()=>{ <br />
+                    console.log(`Sunucu ${port} portunda başlatıldı`) })
+                </code>
+                3000 portu açıldı.
+            </p>
+            <p>
+                <code>
+                    app.get('/', (req, res)=>{ <br />
+                    res.send('Merhaba') })
+                </code>
+                ile kök dizine gönderildi.
+            </p>
+
+            <h2>NODEMON</h2>
+            <p>
+                her işlemden sonra sunucuyu kapatıp açmayı otomatik hale getirmeye
+                yarar.
+            </p>
+            <p>
+                <code> npm install --save-dev nodemon </code>
+            </p>
+            <p>--save-dev: nodemon devDependenciestir.</p>
+            <p>
+                çalışması için package.json -> script içine: <br />
+                <code> "start": "nodemon app.js" </code> eklenir.
+            </p>
+            <p>
+                terminale:
+                <code> npm start </code> yazarak aktifleştirilir. app.js her
+                kaydedildiğinde port baştan başlatılır.
             </p>
         </div>
+        <div class="row static">
+            <h1>Statik Dosyalar - Middleware Giriş</h1>
+
+            <h2>Middleware</h2>
+            <p>req-res döngüsündeki herşeye Middleware denir.</p>
+            <p>
+                Middlewarelar yularıdan aşağı sıra ile çalışır. req-res döngüsü
+                bitmeden bir sonrakine ilerleyemez. İlerlemeyi sağlama için
+                <code>next()</code> methodu kullanılır.
+            </p>
+            <p>get request yapısı da middlewaredir.</p>
+
+            <h3>Örnek Middleware</h3>
+            <p>
+                <code>
+                    const myLogger = (req, res, next)=>{ <br />
+                    console.log("Middleware log 1"); <br />
+                    next() }
+                </code>
+                ile fonksiyonumuz tanımlanır. isteğe cevap olmadığından döngü next()
+                ile bozulur.
+            </p>
+            <p><code> app.use(myLogger); </code> ile fonksiyon kullanıma alınır.</p>
+
+            <h2>Statik Dosyaları Kullanmak</h2>
+            <p>
+                <code> app.use(express.static('public')) </code> ile ekspress için
+                statik dosyalarla çalışabileceği Middleware import edildi.
+            </p>
+            <p>
+                kodu kullanmak için public isimli dosya oluşturuldu ve statik dosyalar
+                içine yüklendi.
+            </p>
+
+            <h2>Response Olarak Dosya Göndermek</h2>
+            <p>
+                <code>
+                    app.get('/', (req, res) => { <br />
+                    res.sendFile(path.resolve(__dirname, 'temp/index.html')); });
+                </code>
+            </p>
+            <p>
+                <code> path.resolve() </code> yöntemi, bir yol dizisini veya yol
+                segmentlerini mutlak bir yola çözümler. <br />
+                <code> __dirname </code> yürütülmekte olan kaynak dosyayı içeren
+                dizinin mutlak yoludur.
+            </p>
+            <p>
+                Kodun işe yaraması için core modül olarak: <br />
+                <code> const path = require('path'); </code> import edilir.
+            </p>
+        </div>
+        <div class="row templateEngine">
+            <h1>Template Engine Kavramı</h1>
+            <p>
+                Template engine bize değişen içeriği html kodu içerisinde dosya
+                uzantısı değiştirilerek kullanmamızı sağlar. Template engineler
+                sayesinde bir static dosyaları ve değieşen dinamik içeriği birlikte
+                kullanabiliriz. Farklı template engineler kullanılabiliriz, biz bu
+                çalışmamızda EJS template engine yapısını kullanacağız.
+            </p>
+            <p><strong>ejs </strong> Embedded JavaScript templates</p>
+            <p>
+                Terminale: <br />
+                <code> npm install ejs </code>
+            </p>
+            <p>
+                JS koduna: <br />
+                <code> const ejs = require('ejs'); </code>
+            </p>
+            <p>
+                <code> app.set("view engine", "ejs"); </code> ile express'e template
+                engine olarak esj kullanacağımızı belirtiriz. Bu durumda esj views
+                klasörünün içine bakar. Bu nedenle bu isimde bir dosya oluşturup html
+                dosyaları içine konuldu. Dosya uzantıları ejs olarak değiştirildi.
+            </p>
+            <p>
+                JS içindeki <br />
+                <code> 
+                    app.get('/', (req, res) => { </code><br />
+                <code style="text-decoration: line-through">
+                    res.sendFile(path.resolve(__dirname, 'temp/index.html'));
+                </code>
+                yerine <br />
+                <code> 
+                    res.render('index'); 
+                </code> yazılır. <br />
+                <code>
+                    }); 
+                </code> diğer sayfalar da bu şablona göre eklenir.
+            </p>
+
+            <h2>Partials Klasörü</h2>
+            <p>
+                Html olarak yazdığımız dosyalardaki ortak kodları birleştirmek için
+                kullanılır.
+            </p>
+            <p>views klasörünün içinde partials klasörü oluşturulur.</p>
+            <p>
+                Daha önce .html olarak yazılmış ve .ejs ye dönüştürülmüş sayfalardaki
+                ortak kodlar için .ejs uzantılı dosyalar partials içinde oluşturulur.
+                <strong>Örnek:</strong> _header.ejs <br />
+                Bu dosyanın içine ortak olan header kodu yapıştırılır.
+            </p>
+            <p>
+                Yapıştırılan kod diğer sayfalardan silinir ve yerine: <br />
+                <code> <%- include('partials/_header') -%> </code> yazılır.
+            </p>
+            <p>Bu kalıp diğer kodlara da uyarlanır.</p>
+            <p>
+                Bu sayede sayfaların ortak noktaları tek elden yönetilebilir. Örneğin
+                js kodunda link olarak verilen "/about" navbar içindeki "about.html"
+                yerine yazıldığında tüm sayfalarda geçerli olur.
+            </p>
+        </div>
+        <div class="row mongoDB">
+            <h1>MongoDB Giriş</h1>
+
+            <h2>SQL vs NoSQL</h2>
+            <p>SQL tablolarla çalışır. NoSQL döküman tabanlıdır.</p>
+            <p>JS json tabanlı NoSQL ile daha rahat çalışır.</p>
+            <p>
+                SQL de tutulacak bilgiler tüm sütunlarda sabittir. NoSQL de böyle bir
+                şart bulunmaz.
+            </p>
+
+            <h2>MongoDB</h2>
+            <p>setup ve path eklenmesi videoda var.</p>
+        </div>
+        <div class="row MongoDBcrud">
+            <h1>MongoDB - CRUD İşlemleri</h1>
+
+            <h2>MongoDB Shell</h2>
+            <p>
+                Dökümantasyon için
+                <a href="https://www.mongodb.com/docs/v4.4/">tıklayınız.</a>
+            </p>
+            <p><code>show dbs</code> mevcut veri tabanlarını gösterir.</p>
+            <p>
+                <code>use</code> ile veri tabanları arasında geçiş yapılabilir ve yeni
+                veri tabanı oluşturulabilir. <br />
+                örnek yeni veri tabanı: <code>use pcat-test-db</code> oluşturulur. İçi
+                boşken db listesinde görünmez.
+            </p>
+            <p>
+                <code>
+                    db.photos.insertOne( <br />
+                    ... {title: "photo 1", description: "Photo desc lorem ipsum dolor!",
+                    qty: 20} <br />
+                    ... )
+                </code>
+                ile ilk örnek verimizi girdik. ve karşılığında: <br />
+                <code>
+                    { "acknowledged" : true, <br />
+                    "insertedId" : ObjectId("63a564428fa9a29730595280") }
+                </code>
+                çıktısını aldık.
+            </p>
+            <p>
+                <code> db.photos.find() </code> ile db içindeki photosta yer alan
+                veriye ulaştık. Çıktı olarak: <br />
+                <code>
+                    { "_id" : ObjectId("63a564428fa9a29730595280"), "title" : "photo 1",
+                    "description" : "Photo desc lorem ipsum dolor!", "qty" : 20 }
+                </code>
+                aldık. Biz belirmediğimiz halde <strong>"_id" : </strong>olarak
+                mongoDB her eklenen ögeye eşsiz ID ekler. Bu ID primary key görevi
+                görür.
+            </p>
+            <p>
+                <code> show collections </code> ile içinde olduğumuz dbin
+                collectionslarını gösterir.
+            </p>
+            <p>
+                Birden fazla veri ekleme örneği: <br />
+                <code>
+                    db.photos.insertMany( [ <br />
+                    ... {title: "photo 2", description: "Photo 2 desc", qty: 50}, <br />
+                    ... {title: "photo 3", description: "Photo 3 desc", qty: 100}, ])
+                </code>
+            </p>
+            <p>
+                <code> db.photos.find({title: "photo 1"}) </code> title değeri photo 1
+                olan veriyi verir.
+            </p>
+            <p>
+                <code> db.photos.find({title: "photo 1", qty: 100}) </code> title
+                değeri photo 1 olan <strong>ve</strong> qty değeri 100 olan veriyi
+                verir. Böyle bir veri yoksa boş döner.
+            </p>
+            <p>
+                <code>
+                    db.photos.find( <br />
+                    {qty: {$lt: 200}} <br />
+                    ).limit(2)
+                </code>
+                qty değeri 200 den az olan 2 veri getirir.
+            </p>
+            <p>
+                <code>
+                    db.photos.updateOne( <br />
+                    ... {title: "photo 1"}, <br />
+                    ... { $set: {qty: 222}} )
+                </code>
+                title değeri photo 1 olan ilk verinin qty değeri 222 olarak
+                güncellendi.
+            </p>
+            <p>
+                db.photos.deleteOne( <br />
+                ... { qty: {$lt: 500}} )
+            </p>
+                qty değeri 500 den küçük olan değerlerden birini siler.
+            <p>
+                <strong>Asla Kullanma</strong> geri dönüşü yok. Onay sormadan siler.
+                <br /><br />
+                Önce doğru db yi sildiğinden emin ol. <br />
+                <code> use pcat-test-db </code> <br />sonra sil: <br />
+                <code> db.dropDatabase() </code>
+            </p>
+        </div>
+        <div class="row mongoose">
+            <h1>Mongoose CRUD İşlemleri</h1>
+            <p>Mongoose bir ODC (Object Document Mapper) aracıdır.</p>
+            <p>
+                terminalde:
+                <code> npm i mongoose </code>
+            </p>
+            <p>test.js oluşturuldu.</p>
+            <p>
+                test.js içine: <br />
+                <code>
+                    const mongoose = require('mongoose'); <br />
+                    const Schema = mongoose.Schema;
+                </code>
+                ile mongoose çağırıldı. ve Schema metodu değişkene atandı.
+            </p>
+            <p>
+                database e bağlanmak için: <br />
+                <code> mongoose.connect('mongodb://localhost/pcat-test-db'); </code>
+                pcat-test-db varsa bağlanır. Yoksa önce yaratır sonra bağlanır.
+            </p>
+            <p>
+                şema oluşturmak: <br />
+                <code>
+                    const PhotoSchema = new Schema({ <br />
+                    title: String, <br />
+                    description: String, });
+                </code>
+            </p>
+            <p>
+                koleksiyon oluşturmak: <br />
+                <code> const Photo = mongoose.model('Photo', PhotoSchema); </code>
+                mongoose 'Photo' verisini alıp photos collectiona dönüştürüyor.
+            </p>
+            <p>
+                Koleksiyona veri eklemek: <br />
+                <code>
+                    Photo.create({ <br />
+                    title: 'Photo Title 1', <br />
+                    description: 'Photo 1 desc. lorem ipsum', });
+                </code>
+            </p>
+            <p>
+                Verileri okumak: <br />
+                <code>
+                    Photo.find({}, (err, data) => { <br />
+                    console.log(data); });
+                </code>
+                ile veriler okunur ve konsola yazdırılır.
+            </p>
+            <p>
+                Verileri güncellemek: <br />
+                <code> 
+                    const id = '63a57f07705931fa74b54a35'; 
+                </code> ile silinecek
+                verinin id numarası değişkene atanır. <br />
+                <code>
+                    Photo.findByIdAndUpdate( <br> 
+                    id, <br>
+                    { title: 'Photo Title 1 updated', <br>
+                    description: 'Photo desc 1 updated'}, <br>
+                    { new: true }, <br>
+                    (err, data) => { <br> 
+                    console.log(data); } );
+                </code> ile veriler güncellenir. <code>{ new: true },</code> ile konsola yazılan datanın yeni olması
+                sağlanır.
+            </p>
+            <p>
+                Verileri silmek <br>
+                <code>
+                const id = '63a5861957e7afe19e3caa81'; <br>
+                Photo.findByIdAndDelete(id, (err, data) => { <br>
+                  console.log('foto silindi');
+                }); 
+            </code>
+            </p>
+        </div>
+        <div class="row requestBody">
+            <h1>Request Body Nesnesi</h1>
+            <p>
+                add.ejs içindeki form istediğimize uygun hale getirildi.
+            </p>
+            <p>
+                Form elementine method="POST" ve action="/photos" eklendi.
+            </p>
+            <p>
+                action="/photos" ile yapılan yönlendirmeyi add.js içinde //Routes altında bu kod ile yakalıyoruz: <br> 
+                <code>
+                    app.post('/photos', (req, res) => { <br>
+                        console.log(req.body); <br>
+                        res.redirect('/') <br>
+                      });
+                </code> ile gelen veri konsola yazdırılmaya çalışıldı ancak <code>undefined</code> alındı. Verinin okunması için 2 adet middleware kullanılır. <br>
+                <code>res.redirect('/')</code> yönlendirmesi ile req, res döngüsü sonlandırılır. 
+            </p>
+            <p>
+                verinin doğru okunması için middleware: <br>
+                <code>
+                    app.use(express.urlencoded({extended:true}));
+                </code> url deki datayı okumamızı sağlar. <br>
+                <code>
+                    app.use(express.json());
+                </code> url deki datayı jsona çevirir.                
+            </p>
+            <p>
+                Bu noktada formdan gelen bilgiyi yakaladık.
+            </p>
+        </div>
+        <div class="row modelVeDinamikIcerik">
+            <h1>Model ve Dinamik İçerik</h1>
+            <p>
+                kök dizine models klasörü ve içine Photo.js dosyası oluşturuldu.
+            </p>
+            <p>
+                Photo.js içinde <br>
+                <code>
+                    const mongoose = require('mongoose'); <br>
+                    const Schema = mongoose.Schema; <br>
+                </code> ile mongoose ve mongoose.Schema import edildi <br>
+                <code>
+                    const PhotoSchema = new Schema({ <br>
+                        title: String, <br>
+                        description: String, <br>
+                        image: String, <br>
+                        dateCreated: { <br>
+                            type: Date, <br>
+                            default: Date.now, 
+                        },
+                    });
+                </code> ile şema oluşturuldu ve default date olarak o anki tarih atandı. <br>
+                <code>
+                    const Photo = mongoose.model('Photo', PhotoSchema);
+                </code> ile Photo şemasını photos koleksiyonu oluşturmak için kullandık. <br> 
+                <code>
+                    module.exports = Photo
+                </code> ile export ettik.
+            </p>
+            <p>
+                app.js içine: <br>
+                <code>
+                    const Photo = require('./models/Photo');
+                </code> ile import edilir. <br>
+                <code>
+                    const mongoose = require('mongoose');
+                </code> ile mongoose import edilir. <br>
+                <code>
+                    mongoose.set('strictQuery', true); <br>
+                    mongoose.connect('mongodb://localhost/pcat-test-db');
+                </code> ile database bağlantısı sağlanır. <br>
+                daha önce oluşturduğumuz ve formdan veri almamızı sağlayan <code>app.post(...)</code> kodu: <br>
+                <code>
+                    app.post('/photos', async (req, res) => { <br>
+                        await Photo.create(req.body) <br>
+                        res.redirect('/')
+                      });
+                </code> olarak düzenlenir. Bu sayede formdan gelen veri database e kaydedilir.
+            </p>
+            <p>
+                Database içindeki verinin okunup ilgili sayfaya gönderilmesi için veri template engine içinde gönderilir. <br>
+                <code>
+                    app.get('/', async (req, res) => {
+                </code> <br>
+                <code>
+                    const photos = await Photo.find({}).sort('-dateCreated')
+                </code> ile photos değişkenine databaseten gelen veri atanır. sort içine yazılan parametreye göre veriler sıralanır.<br>
+                <code>
+                    res.render('index', {
+                    photos: photos
+                </code> ile database üzerinden gelen veri kök sayfaya gönderilir. <br>
+                <code>
+                        });
+                    });
+                </code>
+            </p>
+            <p>
+                veriyi ilgili template engine içine gömmek için index.ejs içindeki kartların biri hariç hepsini sildik. Kalanı da kendi verimiz için kalıp olarak kullanacağız. 
+            </p>
+            <p>
+                .ejs içinde js kodu kullanmak için <code><%</code> ile <code>%></code> içine yazılır.
+            </p>
+            <p>
+                photos içindeki tüm verileri almak için .ejs içinde for döngüsü kurulur. <br>
+                <code>
+                    <% for (let i = 0; i < photos.length; i++ ){ %> 
+                </code> ile for döngüsü başlatılır. <br>
+                <code>
+
+                    &lt;div class="col-lg-4 col-md-6 col-sm-12 tm-catalog-item"&gt; <br>
+                    &lt;div class="position-relative tm-thumbnail-container"&gt; <br>
+                    &lt;img src="img/tn-01.jpg" alt="Image" class="img-fluid tm-catalog-item-img"&gt;    <br>
+                    &lt;a href="video-page.html" class="position-absolute tm-img-overlay"&gt; <br>
+                    &lt;i class="fas fa-play tm-overlay-icon"&gt;&lt;/i&gt; <br>
+                    &lt;/a&gt; <br>
+                    &lt;/div&gt;    <br>
+                    &lt;div class="p-4 tm-bg-gray tm-catalog-item-description"&gt; <br>
+                </code>
+                <code>
+
+                    &lt;h3 class="tm-text-primary mb-3 tm-catalog-item-title"&gt; &lt;%= photos[i].title %&gt;&lt;/h3&gt; 
+                </code> ile photos[i].title yerleştirildi. <br>
+                <code>
+                    &lt;p class="tm-catalog-item-text"&gt;&lt;%= photos[i].description %&gt;&lt;/p&gt;
+                </code> ile photos[i].description yerleştirildi. <br>
+                <code>
+                    &lt;/div&gt; <br>
+                    &lt;/div&gt; <br>
+                    
+                    <% } %>
+                </code> ile for döngüsü sonlandırılır.
+                
+            </p>
+
+        </div>
+        <div class="row tekilSayfa">
+            <h1>Tekil Fotoğraf Sayfaları</h1>
+            <p>
+                MongoDB bizim için her kayıt için ıd oluşturuyor. Biz de onu kullanacağız.
+            </p>
+            <p>
+                index.ejs içinde daha önce düzenlediğimiz kodda altı çizili değişikliği yapıyoruz.<br>
+                <code>
+                    <% for (let i = 0; i < photos.length; i++ ){ %> 
+                </code><br>
+                <code>
+
+                    &lt;div class="col-lg-4 col-md-6 col-sm-12 tm-catalog-item"&gt; <br>
+                    &lt;div class="position-relative tm-thumbnail-container"&gt; <br>
+                    &lt;img src="img/tn-01.jpg" alt="Image" class="img-fluid tm-catalog-item-img"&gt;    <br>
+                    &lt;a href=" <strong><span style="text-decoration: underline;">photos/<%= photos[i]._id %></span></strong> " class="position-absolute tm-img-overlay"&gt; <br>
+                    &lt;i class="fas fa-play tm-overlay-icon"&gt;&lt;/i&gt; <br>
+                    &lt;/a&gt; <br>
+                    &lt;/div&gt;    <br>
+                    &lt;div class="p-4 tm-bg-gray tm-catalog-item-description"&gt; <br>
+                </code>
+                <code>
+
+                    &lt;h3 class="tm-text-primary mb-3 tm-catalog-item-title"&gt; &lt;%= photos[i].title %&gt;&lt;/h3&gt; 
+                </code><br>
+                <code>
+                    &lt;p class="tm-catalog-item-text"&gt;&lt;%= photos[i].description %&gt;&lt;/p&gt;
+                </code><br>
+                <code>
+                    &lt;/div&gt; <br>
+                    &lt;/div&gt; <br>
+                    
+                    <% } %>
+                </code> <br>
+                Bu sayede verinin id sini yakalıyoruz.
+            </p>
+            <p>
+               app.js içine <br>
+               <code> 
+                app.get('/photos/:id', async (req, res) => {
+                </code> ile yakaladığımız id üzerinden req alıyoruz. <br>
+                <code>
+                    const photo = await Photo.findById(req.params.id)
+                </code> ile ilgili ıd ye ait veriyi photo değişkenine atadık. <br>
+                <code>
+                    res.render('photo', { <br>
+                        photo
+                    })
+                    });
+                </code> ile değişkeni photo.ejs ye gönderdik.
+            </p>
+            <p>
+                photo.ejs içinde <br>
+                başlık kısmını <code><%= photo.title %></code> ile ve tanım kısmını <code><%= photo.description %></code> ile değiştiriyoruz.
+            </p>
+            <p>
+                sayfadaki css yapısındaki bozulmayı düzeltmek için dosya yolunu relative yapacağız. Bunun için partials dosyasında link olarak yazmadığımız tüm linklerin başına / koyuyoruz.
+            </p>
+
+        </div>
+        <div class="row gorselUpload">
+            <h1>Görsel Yüklemek</h1>
+            <p>
+                Bunun için express-fileupload modülünü kullanacağız. <br>
+                terminale: <br>
+                <code>
+                    npm i express-fileupload
+                </code> <br>
+                app.js core module içine: <br>
+                <code>
+                    const fileUpload = require('express-fileupload');
+                </code> <br>
+                app.js middleware içine: <br>
+                <code>
+                    app.use(fileUpload());
+                </code> <br>
+                add.ejs input içine: <br>
+                <code>
+                    name="image" type="file" 
+                </code> <br>
+                add.ejs form içine: <br>
+                <code>
+                    encType="multipart/form-data"
+                </code> forma görsel yüklemeyi sağlar.
+            </p>
+            <p>
+                <code>
+                    app.post('/photos', async (req, res) => {...}
+                </code> kodunun içine: <br>
+                <code>
+                    console.log(req.files.image);
+                </code> <br>
+                yazılarak aşağıdaki çıktı konsola yazdırılır. <br>
+                <code>
+                    {
+                        name: 'car_unsplash.jpg', <br>
+                        data: &lt;Buffer ff d8 ff e0 00 10 4a 46 49 46 00 01 01 01 00 48 00 48 00 00 ff e1 00 22 45 78 69 66 00 00 4d 4d 00 2a 00 00 00 08 00 01 01 12 00 03 00 00 00 01 00 01 ... 637876 more bytes&gt;, <br>
+                        size: 637926, <br>
+                        encoding: '7bit', <br>
+                        tempFilePath: '', <br>
+                        truncated: false, <br>
+                        mimetype: 'image/jpeg', <br>
+                        md5: 'bb9f681142d25dee6e6f251188018846', <br>
+                        mv: [Function: mv] 
+                      }
+                </code>
+            </p>
+            <p>
+                Yukarıda bilgileri alabildiğimizi gördükten sonra app.post(...) aşağıdaki gibi düzenlenir. <br>
+                <code>
+                    app.post('/photos', async (req, res) => {
+                </code> <br> <br>
+                <code>
+                    const uploadDIR = 'public/uploads';
+                </code> ile upload edilecek dosya belirtilir.<br>
+                <code>
+                    if(!fs.existsSync(uploadDIR)){
+                </code> eğer dosya yok ise: <br>
+                <code>
+                    fs.mkdirSync(uploadDIR)
+                </code> oluştur. <br>
+                <code>
+                }
+                </code> Bu işlem tamamlanmadan devam edilmemesi için fonksiyon senkron (Sync) yazılır. <br> <br>
+                <code>
+                    let uploadedImage = req.files.image;
+                </code> ile yüklenen dosyanın bilgileri uploadedImage değişkenine atanır.<br>
+                <code>
+                    let uploadPath = __dirname + '/public/uploads/' + uploadedImage.name;
+                </code> ile yüklenen dosyanın yüklenme yolu değişkene atanır. Dosya oluşturmak için fs modülü import edilir ve kullanılır.<br>
+                <code>
+                    uploadedImage.mv(uploadPath, async () => { 
+                </code> ile yüklenen dosyanın ekleneceği yer belirtilrir. <br>
+                <code>
+                    await Photo.create({ <br>
+                        ...req.body, <br>
+                        image: '/uploads/' + uploadedImage.name,
+                      });
+                </code> ile database üzerine veri eklenir. <br>
+                <code>
+                    res.redirect('/');
+                    });
+                    });
+                </code> ile ana sayfaya yönlenirilir ve kod sonlandırılır.
+                <br><br>
+                Görselin indexte ve tekli foto sayfasında görünmesi için template içine görsel tanımlanır. <br>
+                <code>
+                    img src="<%= photo.image %>"
+                </code>
+
+            </p>
+            <p>
+                index sayfasında son eklenenin en üstte görünmesi için <code>.sort()</code> kullanılır. <br>
+                <code>
+                    app.get('/', async (req, res) => { <br>
+                        const photos = await Photo.find({}).sort('-dateCreated');
+                </code> ile dateCreated verisine göre tersten (azalan) sıralanır. Başında "-" olmasaydı artan sıralanırdı. <br>
+                <code>
+                    ......})
+                </code>
+            </p>
+
+
+
+        </div>
+        <div class="row gorselUpdate">
+           <h1>Fotoğraf Bilgisi Güncellemek</h1> 
+           <p>
+            views içine edit.ejs oluşturulur.
+           </p>
+           <p>
+            add.ejs içeriği kopyalanıp edit.ejs içine yapıştırılıp düzenlenir.
+           </p>
+           <p>
+            photo.ejs içinde edit butonu link olarak düzenlenir: <br>
+            <code>
+                &lt;<span style="text-decoration: underline;">a href="/photos/edit/&lt;%= photo._id %&gt;"</span> class="btn btn-primary p-0 mb-4 tm-btn-animate tm-btn-download tm-icon-download"&gt;&lt;span>Update Details&lt;/span&gt;<span style="text-decoration: underline;">&lt;/a&gt;</span>
+            </code>
+           </p>
+           <p>
+            app.js routes içine: <br>
+            <code>
+                app.get('/photos/edit/:id', async (req, res) => { <br>
+                    const photo = await Photo.findOne({ _id: req.params.id }); <br>
+                    res.render('edit', { <br>
+                      photo, <br>
+                    }); 
+                  });
+            </code>
+           </p>
+           <p>
+            edit.ejs içinde title ve description alanları düzenlenir: <br>
+            <code>
+                &lt;div class="form-group"&lt; <br>
+                    &lt;input type="text" name="title" <span style="text-decoration: underline;">value="&lt;%= photo.title %&gt;"</span> class="form-control rounded-0" placeholder="Photo Title"&gt; <br>
+                  &lt;/div&gt; <br>
+                  &lt;div class="form-group"&gt; <br>
+                    &lt;textarea rows="8" name="description" class="form-control rounded-0" placeholder="Photo Description" <br>
+                              required&gt;<span style="text-decoration: underline;">&lt;%= photo.description %&gt;</span>&lt;/textarea&gt; <br>
+                  &lt;/div&gt; 
+            </code>   
+           </p>
+           <p>
+            Bu noktada put request (değiştir) işlemine ihtiyacımız var ancak pek çok tarayıcı sadece get ve post request üzerinden çalışır. Bu nedenle put requesti post request ile yapacağız. Bunun için <strong>methıd-override</strong> modülünü kullanacağız.<br>
+            konsola: <br>
+            <code>
+                npm i method-override
+            </code> <br>
+            app.js içine core modul:<br>
+            <code>
+                const methodOverride = require('method-override');
+            </code> <br>
+            app.js içine middleware:<br>
+            <code>
+                app.use(methodOverride('_method'));
+            </code>
+           </p>
+           <p>
+            edit.ejs form etiketinde action: <br>
+            <code>
+                action="/photos/<%= photo._id %>?_method=PUT"
+            </code> olarak güncellendi. Bu sayede <code>method="POST"</code> olmasına rağmen yöntem PULL olarak request edildi.
+           </p>
+           <p>
+            edit.ejs formdan gelen put requesti karşılama için add.js router içine: <br>
+            <code>
+                app.put('/photos/:id', async (req, res) => {
+            </code> <br>
+            <code>
+                const photo = await Photo.findOne({ _id: req.params.id }); 
+            </code> <br>
+            <code>
+                photo.title = req.body.title; <br>
+                photo.description = req.body.description; 
+            </code> ile değişiklikleri ekledik. <br>
+            <code>
+                photo.save(); 
+            </code> ile değişiklikleri database e kaydettik. <br>
+            <code>
+                res.redirect(`/photos/${req.params.id}`) 
+            </code> ile fotoğrafın sayfasında döndük. <br>
+            <code>
+            });  
+            </code>
+           </p>
+        </div>
+        <div class="row gorselDelete">
+            <h1>Fotoğraf Silmek</h1>
+            <p>
+                Delete butonunu kullanabilmek için buton link haline getirilir ve aşağıdaki düzenleme yapılır. <br>
+                <code>
+                    &lt;<span style="text-decoration: underline;">a <br> 
+                    href="/photos/&lt;%= photo._id %&gt;?_method=DELETE"</span>
+                </code> ile linkten delete request alınır.<br>
+                <code>
+                    class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download"<br>
+                </code>
+                <code>    
+                    <span style="text-decoration: underline;">onclick="return confirm('ARE YOU SURE?')"</span>
+                </code> ile delete işlemi için popup comfirm kutusu açılır.<br>
+                <code>
+                    &gt;&lt;span&gt;Delete Photo&lt;/span&gt;<span style="text-decoration: underline;">&lt;/a&gt;</span>
+                </code>  
+            </p>
+            <p>
+                DELETE metodunun çalışması için middleware alanında kullanılacak metotların belirtilmesi gerekir. İlgili kod aşağıdakine modifiye edilir. <br>
+                <code>
+                    app.use( <br>
+                        methodOverride('_method', { <br>
+                            methods: ['POST', 'GET'],
+                </code> ile gerekli metotlar eklenir. <br>
+                <code>
+                    })
+                    );
+                </code>
+            </p>
+            <p>
+                Delete requestin alınması, ve çalışması için app.js router alanına: <br>
+                <code>
+                    app.delete('/photos/:id', async (req, res) => {
+                </code> ile delete request karşılanır. <br>
+                <code>
+                    const photo = await Photo.findOne({ _id: req.params.id });
+                </code> ile silinecek data tanımlanır. <br>
+                <code>
+                    let deletedImage = __dirname + '/public' + photo.image;
+                </code> ile silinecek dosyanın yolu tanımlanır. <br>
+                <code>
+                    fs.unlinkSync(deletedImage);
+                </code> ile dosya silinir. <br>
+                <code>
+                    await Photo.findByIdAndRemove(req.params.id);
+                </code> ile database'ten data silinir. <br>
+                <code>
+                        res.redirect('/');
+                    });
+                </code>
+            </p>
+            <p>
+                Bu noktada dosya eklemeden data girmeye çalışırsak hata alırız ve server donar. Bunu engellemek için <code>input type="file"</code> alanına <code>required</code> eklenir.
+            </p>
+            <p>
+                Aynı isimde iki dosya yüklediğimizde upload klasöründe tek dosya oluşuyor. Bunu engelleme için dosya adının başına id veya tarih (<code>Date.now()</code> vs) eklenip uniqe hale getirilebilir. Bunun için tarihi değişkene atamak mantıklı. Aksi takdirde tarihteki saniyelik sapma dosya adını değiştirir.<br>
+            </p>
+        </div>
+        <div class="row MCV">
+            <h1>MVC Yeniden Düzenleme</h1>
+
+            <h2>MVC Nedir?</h2>
+            <p>
+                MVC - Model View Controller - uygulama kodunu Model, View ve Controller olmak üzere birbirine bağlı üç öğeye ayrılmasını içeren bir yazılım mimari yapısıdır.   
+            </p>
+
+            <h3>Model</h3>
+            <p>
+                Uygulamanın veri yapısını ve veri tabanı ile ilişkisini tanımlar. Schema "şablon" yapısı sayesinde veri özellikleri belirlenir.
+            </p>
+
+            <h3>View</h3>
+            <p>
+                Uygulamanın son kullanıcılara görünen bölümünü temsil eder. Son kullanıcıya gösterilecek veri özelleştirilebilir. 
+            </p>
+
+            <h3>Controller</h3>
+            <p>
+                Son kullanıcıdan gelen isteklerin uygun View'e yönlendirilmesi kontrol edilir. İstek, cevap işleyicisi olarak da tanımlanır. 
+            </p>
+            <p>
+                Kök dizine controllers adında bir klasör oluşturuldu. İçine photoControllers.js dosyası oluşturuldu. app.js içindeki yönlendirme dosyaları bu dosyaya fonksiyon içine atılır. ve export edilir. Fonksiyonun olduğu photoControllers.js app.js içine import edilir. <br>
+                photoController içinde: <br>
+                <code>
+                    exports.getAllPhotos = async (req, res) => { <br>
+                        const photos = await Photo.find({}).sort('-dateCreated'); <br>
+                        res.render('index', { <br>
+                          photos: photos,
+                        });
+                      };
+                </code> ile asenkron fonksiyon app.js içinden taşınılır. <br>
+                <code>
+                    const photoController = require('./controllers/photoControllers');
+                </code> ile photoControllers.js import edilir.<br>
+                yönlendirme için taşınan dosyalar app.js içindeki ilgili yerine import edildiği model ile taşınır. örn:
+                <code>
+                    app.get('/', <span style="text-decoration: underline;">photoController.getAllPhotos</span> );
+                </code> ile fonksiyon çağırılır.
+            </p>
+            <p>
+                Bu işlem database ile photo fonksiyonunu yönettiğimiz tüm fonksiyonlara uygulanır.
+            </p>
+            <p>
+                Taşınan fonksiyonların çalışması için gereken modeller de photoControllers.js içine import edilir. <br>
+                <code>
+                    const Photo = require('../models/Photo');
+                </code>
+            </p>
+            <p>
+                Sadece sayfa çağıran fonksiyonlar ise controllers/pageControllers.js içine taşınır.
+            </p>
+            <p>
+                Kodu taşıdıktan sonra dosya konumu değiştiği için dosya bağlantılarının da güncellenmesi gerekir.
+            </p>
+        </div>
+        <div class="row pagination">
+            <h1>Pagination (Sayfalama)</h1>
+            <p>
+                Tüm fotoğrafların anasayfada karşımıza çıkmamaıs için pagination (sayfalama) kullanılan yöntemlerden biridir.
+            </p>
+
+            <h2><code>req.query</code></h2>
+            <p>
+                req.query bizim tarayıcı üzerinden yaptığımız sorgunun node.js üzerinden algılanmasını sağlar. <br>
+                sorgu örneği: tarayıcıda:<br>
+                <code>
+                    http://localhost:3000/?user=test&pass=1234
+                </code> <br>
+                konsolda okumak için: ilgili sayfanın app.get fonksiyonuna:<br>
+                <code>
+                    console.log(req.query);
+                </code> <br>
+                konsoldaki çıktı: <br>
+                <code>
+                    { user: 'test', pass: '1234' } 
+                </code> şeklinde key-value alınır. Buradan alınan değere göre işlem yapılabilir.
+            </p>
+
+            <h2>PCAT Sayfalama</h2>
+            <p>
+                photoControler.js içinde index sayfamızı yöneten asenkron fonksiyon aşağıdaki gibi düzenlenir: <br>
+                <code>
+                    exports.getAllPhotos = async (req, res) => { <br>
+                    const page = req.query.page || 1;    
+                </code> ile sayfadan page olarak alınacak sorgu page değişkenine tanımlanır. varsayılan olarak 1 atanır (bunun için veya anlamında || kullanılır.) <br>
+                <code>
+                    const photosPerPage = 2; 
+                </code> bir sayfada görünmesi istenilen fotoğraf sayısı değişkene atanır. 
+            </p>
+            <p>
+                <code>
+                    const totalPhotos = await Photo.find().countDocuments();
+                </code> ile toplam veri sayısı değişkene atanır.
+            </p>
+            <p>
+                <code>
+                    const photos = await Photo.find({}) <br>
+                    .sort('-dateCreated')
+                    .skip((page-1) *photosPerPage)
+                </code> ile daha önceki sayfalarda gösterilmesi gerekenler atlanır. <br>
+                <code>
+                    .limit(photosPerPage);   
+                </code> ile sayfada gösterilmek istenen kadar veri çekilir. fazlası çekilmez.
+            </p>
+            <p>
+                <code>
+                    res.render('index', { <br>
+                        photos: photos, <br>
+                        current: page,
+                </code> ile mevcut sayfa bilgisi gönderilir. <br>
+                <code>
+                    pages: Math.ceil(totalPhotos/photosPerPage)
+                </code> ile toplam sayfa bilgisi gönderilir. <br>
+                <code>
+                }); 
+                </code> <br>
+                <code>
+                };
+                </code>
+            </p>
+            <p>
+                index.ejs içindeki Catalog Paging Buttons alanı aşağıdaki gibi düzenlenir: <br>
+                <code>
+                    <% if (pages>0){ %> 
+                </code> sayfa sayısı 0dan büyükse butonları ekler. <br>
+                <code>
+                    &lt;ul class="nav tm-paging-links">
+                </code>
+                <code>
+                    <% for (i=1; i<=pages; i++){ %>
+                </code> ile sayfa numaralarını çağırır. Bu işlemi toplam sayfa sayısına kadar tekrarlar. <br>
+                <code>
+                    <% if(i == current){ %> 
+                </code> ile sayfa numarası açık olan sayfa ile aynı olan butonu aşağıdaki gibi gösterir. <br>
+                <code>
+                    &lt;li class="nav-item active">&lt;a href="/?page=<%= i %>" class="nav-link tm-paging-link"><%= i %>&lt;/a>&lt;/li>
+                </code> Link olarak req.query ile page verisini gönderir. <br>
+                <code>
+                    <% } else { %>
+                </code> ile yukarıdaki kurala uymayan sayfa numaralarını aşağıdaki gibi gösterir.  <br>
+                <code>
+                    &lt;li class="nav-item">&lt;a href="/?page=<%= i %>" class="nav-link tm-paging-link"><%= i %>&lt;/a>&lt;/li>
+                </code> Link olarak req.query ile page verisini gönderir. <br>
+                <code>
+                    <% } %> <br>
+                    <% } %> 
+                </code> <br>
+                <code>
+                    &lt;/ul>
+                </code> <br>
+                <code>
+                    <% } %>
+                </code>
+            </p>
+        </div>
+        <row class="atlasCloud">
+            <h1>Heroku - MongoDB Atlas Deployment</h1>
+
+            <h2>Atlas Cloud</h2>
+            <p>
+                Atlas Cloud, mongoDB geliştiriceleri tarafından geliştirilen bir veritabanı bulut hizmetidir, <a href="https://account.mongodb.com/account/login?nds=true">https://account.mongodb.com/account/login?nds=true</a> adresinden giriş yapıyoruz.
+            </p>
+            <p>
+                sayfaya üye ol > ilerle > new project > create project > build a database > free > ayarlar > create 
+            </p>
+            <p>
+                kurulan cluster için > connect > connect your application <br>
+                çıkan ekranda yer alan "Add your connection string into your application code" altındaki link app.js içindeki mongoose lokal bağlantı kodunu atlasa yönlendirmek için kullanılır. <br>
+                <code>
+                    mongoose.connect('mongodb+srv://arslan_ng:narniag7A.@cluster0.z8aaudl.mongodb.net/pcat-db?retryWrites=true&w=majority');
+                </code>
+            </p>
+            <p>
+               kablosuz ağ WLRN3 ve WLRN 2 ise bağlanmaz. WINET e geç. 
+            </p>
+            
+            <h2>HEROKU</h2>
+            <p>
+                <a href="https://www.heroku.com/">https://www.heroku.com/</a>
+            </p>
+            <p>
+                üye ol > 
+            </p>
+        </row>
+        
     </div>
+    <!-- js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
 </html>
